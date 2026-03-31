@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="微波炉火种众筹计划 — BSC 主网 BNB 众筹，单笔 0.5～1 BNB（以链上为准），最多 1000 个地址，仅 EOA。"
+    />
+    <meta name="theme-color" content="#0a0806" />
+    <title>微波炉火种众筹计划 · BNB</title>
+    <link rel="icon" href="brand-mark.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap-wide header-top">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <img src="brand-mark.png" alt="" width="40" height="40" decoding="async" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">微波炉火种众筹计划</span>
+            <span class="brand-tagline">BSC CROWDFUND</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" id="btn-connect" class="btn-pill btn-wallet">连接钱包</button>
+          <button type="button" id="btn-menu" class="btn-icon" aria-expanded="false" aria-controls="nav-drawer" aria-label="打开菜单">
+            <span class="hamburger"></span>
+          </button>
+        </div>
+      </div>
+      <div class="wrap-wide header-sub">
+        <button type="button" id="btn-switch-network" class="btn-outline-gold">切换到 BSC</button>
+        <button type="button" id="btn-copy-shortcut" class="btn-outline-gold">复制合约地址</button>
+      </div>
+    </header>
+
+    <div id="nav-backdrop" class="nav-backdrop" aria-hidden="true"></div>
+    <nav id="nav-drawer" class="nav-drawer" aria-label="微波炉火种众筹计划 页面导航">
+      <h3>导航</h3>
+      <a href="#sec-progress">众筹进度</a>
+      <a href="#sec-participate">参与众筹</a>
+      <a href="#sec-contract">众筹合约</a>
+      <a href="#sec-treasury">资金去向</a>
+      <a href="#sec-wallet">网络与状态</a>
+      <a href="#sec-security">安全说明</a>
+    </nav>
+
+    <main class="wrap">
+      <section class="banner-marquee-wrap" id="sec-banner" aria-label="微波炉火种众筹计划 宣传图">
+        <div class="banner-marquee">
+          <div class="banner-track" id="banner-track"></div>
+        </div>
+      </section>
+
+      <p class="lead">
+        <strong>微波炉火种众筹计划</strong>在 BSC 主网向<strong>众筹合约</strong>转入 <strong>0.5～1 BNB</strong>（以链上常量为准，含边界）；
+        全链最多 <strong>1000</strong> 个地址；发送方须为 <strong>EOA</strong>。每个地址<strong>仅可成功一次</strong>，BNB 由合约转给多签。
+        可点击下方<strong>参与众筹</strong>在弹窗中输入金额，确认后将唤起钱包支付（合约 <code>receive</code> 入账）。
+      </p>
+
+      <section class="card participate-card" id="sec-participate">
+        <h2>参与众筹</h2>
+        <p class="hint" style="margin-top: 0">输入金额后点「参与并支付」将唤起钱包；若未连接会先请求连接，再向本计划众筹合约发送 BNB。</p>
+        <p class="actions">
+          <button type="button" id="btn-open-participate" class="btn primary">参与众筹</button>
+        </p>
+      </section>
+
+      <section class="card progress-card" id="sec-progress">
+        <h2>众筹进度</h2>
+        <p class="raised-line">已众筹 <strong id="raised-amount">—</strong> <span class="raised-unit">BNB</span></p>
+        <p class="progress-caption" id="raised-caption"></p>
+        <div class="progress-block">
+          <div class="progress-head">
+            <span>参与名额</span>
+            <span class="progress-meta" id="slot-meta">—</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="slot-track">
+            <div class="progress-fill" id="slot-bar"></div>
+          </div>
+        </div>
+        <div class="progress-block">
+          <div class="progress-head">
+            <span>金额进度（相对满额 1000 BNB）</span>
+            <span class="progress-meta" id="amount-meta">—</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="amount-track">
+            <div class="progress-fill progress-fill-amount" id="amount-bar"></div>
+          </div>
+        </div>
+        <p class="hint" id="progress-hint">安装并启用钱包后，通过钱包 RPC 加载链上数据。</p>
+      </section>
+
+      <section class="card" id="sec-contract">
+        <h2>众筹合约（收款地址）</h2>
+        <p class="mono" id="contract-display"></p>
+        <p class="actions">
+          <button type="button" id="btn-copy" class="btn primary">复制合约地址</button>
+        </p>
+        <p class="hint">请与官方公告、源码中的 config.js、BscScan 已验证合约交叉核对后再转账。</p>
+      </section>
+
+      <section class="card" id="sec-treasury">
+        <h2>资金去向（多签）</h2>
+        <p class="mono" id="multisig-display">加载中或请连接钱包…</p>
+        <p class="hint">以合约只读函数 <code>treasury()</code> 为准；成功众筹后 BNB 由合约转至此地址。</p>
+      </section>
+
+      <section class="card" id="sec-wallet">
+        <h2>网络与状态</h2>
+        <p id="status" class="status"></p>
+        <p id="bounds-hint" class="hint" style="margin-top: 0.75rem"></p>
+        <p id="eoa-only-hint" class="warning" hidden>当前连接地址在链上带有合约字节码，无法通过本众筹规则入账，请改用普通 EOA 钱包。</p>
+        <p id="already-hint" class="warning" hidden>该地址已完成链上众筹，请勿再向合约转账。</p>
+      </section>
+
+      <dialog id="participate-dialog" class="participate-dialog">
+        <form method="dialog" class="participate-dialog-inner">
+          <h2 id="participate-dialog-title">参与众筹</h2>
+          <p class="modal-range" id="modal-range-hint">正在读取链上限额…</p>
+          <label class="modal-field">
+            <span>金额（BNB）</span>
+            <input type="number" id="input-participate-amount" step="0.01" min="0.5" max="1" value="0.5" autocomplete="off" />
+          </label>
+          <p class="hint modal-contract-line" id="modal-contract-line"></p>
+          <div class="modal-actions">
+            <button type="button" id="btn-participate-cancel" class="btn">取消</button>
+            <button type="button" id="btn-participate-pay" class="btn primary">参与并支付</button>
+          </div>
+        </form>
+      </dialog>
+
+      <section class="card security" id="sec-security">
+        <h2>安全说明</h2>
+        <ul>
+          <li>参与本计划时，点击「参与并支付」将发起链上交易；请以钱包弹窗中的<strong>收款地址与金额</strong>为准。</li>
+          <li>合约限制：最多 1000 个成功参与地址；<code>msg.sender</code> 不得为合约地址（<code>code.length != 0</code> 即拒绝）。</li>
+          <li>金额由合约常量固定为 <strong>0.5～1 BNB</strong>（含），部署不可改；constructor 仅设 treasury、admin。</li>
+          <li><strong>admin</strong> 可 <code>sweep*</code> 转走合约内误转资产；请使用可信多签。</li>
+          <li>链上只读与交易均通过钱包扩展所配置的 RPC；前端依赖的 ethers 与页面同源分发，不依赖第三方脚本 CDN。</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="vendor/ethers.umd.min.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
